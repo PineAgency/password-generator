@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Password Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light d-flex align-items-center vh-100">
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h4 class="mb-3 text-center">🔐 Password Generator</h4>
+
+                        <div class="mb-3">
+                            <input id="password" class="form-control" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Length: <span id="lenVal">12</span></label>
+                            <input type="range" id="length" class="form-range" min="6" max="32" value="12">
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="upper" checked>
+                            <label class="form-check-label">Uppercase</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="lower" checked>
+                            <label class="form-check-label">Lowercase</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="numbers" checked>
+                            <label class="form-check-label">Numbers</label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="symbols">
+                            <label class="form-check-label">Symbols</label>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary" onclick="generate()">Generate</button>
+                            <button class="btn btn-outline-secondary" onclick="copy()">Copy</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const lengthEl = document.getElementById('length');
+        const lenVal = document.getElementById('lenVal');
+        const passwordEl = document.getElementById('password');
+
+        lengthEl.oninput = () => lenVal.textContent = lengthEl.value;
+
+        function generate() {
+            const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const lower = "abcdefghijklmnopqrstuvwxyz";
+            const numbers = "0123456789";
+            const symbols = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+
+            let chars = "";
+            if (document.getElementById('upper').checked) chars += upper;
+            if (document.getElementById('lower').checked) chars += lower;
+            if (document.getElementById('numbers').checked) chars += numbers;
+            if (document.getElementById('symbols').checked) chars += symbols;
+
+            if (!chars) return alert("Select at least one option");
+
+            let pass = "";
+            for (let i = 0; i < lengthEl.value; i++) {
+                pass += chars[Math.floor(Math.random() * chars.length)];
+            }
+            passwordEl.value = pass;
+        }
+
+        function copy() {
+            passwordEl.select();
+            navigator.clipboard.writeText(passwordEl.value);
+        }
+    </script>
+
+</body>
+
+</html>
